@@ -33,7 +33,8 @@ driver.get("https://fusionmx.babson.edu/CourseListing/index.cfm?fuseaction=Cours
 
 # open("courses.html", 'w').write(driver.page_source)
 
-
+# function: for a given course this function will return an object that contains attributes as keys and corrresponding attribute values
+# scraping method: because the popup menu contains information in a table format we must iterate through each row and cell
 def get_details(link):
     driver.get(base_url+link)
     popup_page = bs4.BeautifulSoup(driver.page_source)
@@ -51,6 +52,7 @@ page = bs4.BeautifulSoup(driver.page_source)
 source = driver.page_source
 # page = etree.parse(source, htmlparser)
 
+# create a list containing course attribute titles
 headers = [
     'Capacity',
     'Course Level',
@@ -76,6 +78,10 @@ headers = [
     "Term",
     "Title"
 ]
+
+# write all of the collected information from all of the courses on the listing into a new CSV file
+# the CSV file will be formatted so that it is separated by semester
+# each new line will represent the information for a distinct course
 with open("courses.csv", 'w', newline='') as file:
     writer = csv.DictWriter(file, fieldnames=headers)
     writer.writeheader()
